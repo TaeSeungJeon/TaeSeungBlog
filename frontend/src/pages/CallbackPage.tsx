@@ -14,6 +14,9 @@ function CallbackPage({ onLogin }: CallbackPageProps) {
         const code = params.get('code');
         const state = params.get('state');
 
+        // 일회용 code·state가 주소창에 남지 않도록 쿼리스트링 제거 (해시 라우트는 유지)
+        window.history.replaceState(window.history.state, '', window.location.pathname + window.location.hash);
+
         // OAuth CSRF 방어: 로그인 시작 시 저장한 state와 일치하는지 검증
         const savedState = sessionStorage.getItem('oauth_state');
         sessionStorage.removeItem('oauth_state');
