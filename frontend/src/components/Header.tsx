@@ -1,6 +1,7 @@
 import {Link, useLocation} from 'react-router-dom';
 import type {AuthState} from "../types";
 import axiosInstance from '../api/axiosInstance';
+import {startGithubLogin} from '../utils/githubLogin';
 
 const LOGIN_ICON = 'gitIcon.png';
 const ADMIN_USERNAME = 'TaeSeungJeon';
@@ -21,14 +22,6 @@ const NAV_ITEMS = [
 
 function Header({isDark, onToggle, auth, onLogout}: HeaderProps) {
     const location = useLocation();
-
-    // OAuth CSRF 방어: 로그인 시작마다 일회용 state 발급 후 sessionStorage에 보관
-    const handleGithubLogin = () => {
-        const state = crypto.randomUUID();
-        sessionStorage.setItem('oauth_state', state);
-        const url = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}&scope=read:user,user:email&state=${state}`;
-        window.location.href = url;
-    };
 
     const handleClearCache = async () => {
         await axiosInstance.delete('/api/posts/cache/clear');
@@ -83,7 +76,7 @@ function Header({isDark, onToggle, auth, onLogout}: HeaderProps) {
                             </button>
                         </div>
                     ) : (
-                        <button onClick={handleGithubLogin} className="shrink-0" aria-label="GitHub 로그인">
+                        <button onClick={() => startGithubLogin()} className="shrink-0" aria-label="GitHub 로그인">
                             <img
                                 src={LOGIN_ICON}
                                 alt="GitHub 로그인"

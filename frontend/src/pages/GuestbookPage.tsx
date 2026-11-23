@@ -8,6 +8,7 @@ import {
 } from '../api/guestbookApi';
 import type {GuestbookItem, AuthState} from '../types';
 import useScrollFadeIn from '../hooks/useScrollFadeIn';
+import {startGithubLogin} from '../utils/githubLogin';
 
 interface GuestbookPageProps {
     auth: AuthState;
@@ -115,12 +116,13 @@ function GuestbookPage({auth}: GuestbookPageProps) {
                     <p className="text-md text-gray-400 dark:text-gray-500">
                         GitHub 계정으로 로그인 후 방명록을 남길 수 있습니다.
                     </p>
-                    <a
-                        href={`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}&scope=read:user,user:email`}
-                        className="inline-block text-xs text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-lg hover:opacity-70 transition-opacity"
+                    <button
+                        type="button"
+                        onClick={() => startGithubLogin()}
+                        className="inline-block cursor-pointer text-xs text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-lg hover:opacity-70 transition-opacity"
                     >
                         GitHub로 로그인
-                    </a>
+                    </button>
                 </div>
             )}
 

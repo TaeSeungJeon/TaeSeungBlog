@@ -6,6 +6,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { getPost, deletePost } from '../api/postApi';
 import { getComments, createComment, createReply, deleteComment, deleteReply } from '../api/commentApi';
 import type { PostDetail, Comment, AuthState } from '../types';
+import { startGithubLogin } from '../utils/githubLogin';
 
 interface CodeProps {
     inline?: boolean;
@@ -214,12 +215,13 @@ function PostDetailPage({ auth }: PostDetailPageProps) {
                         <p className="text-sm text-gray-400 dark:text-gray-500">
                             GitHub 계정으로 로그인 후 댓글을 남길 수 있습니다.
                         </p>
-                        <a
-                            href={`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}&scope=read:user`}
-                            className="inline-block text-xs text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-lg hover:opacity-70 transition-opacity"
+                        <button
+                            type="button"
+                            onClick={() => startGithubLogin('read:user')}
+                            className="inline-block cursor-pointer text-xs text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-lg hover:opacity-70 transition-opacity"
                         >
                             GitHub로 로그인
-                        </a>
+                        </button>
                     </div>
                 )}
 
